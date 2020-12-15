@@ -20,14 +20,22 @@ const Route = use('Route')
 //   return { greeting: 'Hello world in JSON' }
 // })
 
-Route.post('/users','UserController.create')
+Route.post('/users', 'UserController.create')
+Route.delete('/users/:id', 'UserController.destroy')
+	.middleware('auth')
+
 Route.post('/sessions', 'SessionController.create')
 
 Route.resource('notes', 'NoteController')
 	.apiOnly()
 	.middleware('auth')
 
-Route.post('notes/:id/images','ImageController.store')
+Route.post('notes/:id/images', 'ImageController.store')
 	.middleware('auth')
 
 Route.get('images/:path', 'ImageController.show')
+
+Route.post('share', 'NoteSharingController.share')
+	.middleware('auth')
+Route.get('sharedwithme', 'NoteSharingController.listSharedWithMe')
+	.middleware('auth')

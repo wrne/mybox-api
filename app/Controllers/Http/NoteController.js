@@ -18,9 +18,14 @@ class NoteController {
 	 * @param {Response} ctx.response
 	 * @param {View} ctx.view
 	 */
-	async index({ request, response, view }) {
+	async index({ auth }) {
+		
+		//TODO: TESTAR QUERY COM USUARIOS
+		const {id} = auth.user
 		const notes = Note.query()
+			.where('user_id','=',id)
 			.with('images')
+			.with('sharing')
 			.fetch()
 
 		return notes
@@ -42,9 +47,12 @@ class NoteController {
 			'title',
 			'content',
 			'creation',
-
 		])
 
+		if (!data.creation){
+			data.creation = new Date()
+		}
+		
 		const note = await Note.create({ ...data, user_id: id })
 
 		return note;

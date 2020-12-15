@@ -14,6 +14,11 @@ class Note extends Model {
 	images(){
 		return this.hasMany('App/Models/Image')
 	}
+
+	sharing(){
+		return this.hasMany('App/Models/NoteSharing')
+	}
+
 }
 
 module.exports = Note
